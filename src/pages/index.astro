@@ -1,0 +1,60 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+
+<style>
+	@media (min-width: 640px) {
+		#ip-group{
+			width: 500px;
+		}
+		#main{
+			width: 90%;
+		}
+		ul{
+			justify-content: space-between;
+			padding: 25px;
+		}
+	
+	} {
+		
+	}
+</style>
+<Layout title="Ip Tracker">
+	<picture>
+		<source media="(min-width: 640px)" srcset="pattern-bg-desktop.webp">
+		<img src="pattern-bg-mobile.webp" alt="background image" class="w-full sm:max-h-60 relative bg-contain">
+	  </picture>
+	<div class="z-10 flex justify-center">
+		<section id="main" class="absolute py-7 top-0">
+		<div class= "relative ">
+			<header class="text-center mb-5">
+				<h1 class="text-white font-medium text-2xl">IP Address Tracker</h1>
+			</header>
+
+			<div
+				id="ip-group"
+				class="w-80 m-auto bg-white flex items-center justify-between rounded-xl overflow-hidden relative"
+			>
+				<input
+					type="text"
+					id="ip-input"
+					class="h-12 px-4 outline-none placeholder:text-sm w-5/6"
+					placeholder="Search for any IP address or domain"
+				/>
+				<button id="get-ip" class="h-12 px-6 bg-gray-400" type="button" disabled>
+					<svg xmlns="http://www.w3.org/2000/svg" width="11" height="14">
+						<path fill="none" stroke="#FFF" stroke-width="3" d="M2 1l6 6-6 6"></path>
+					</svg>
+				</button>
+			</div>
+			<ul id="data-list" class="hidden w-full mt-4 py-7 text-center absolute rounded-xl z-50 bg-white shadow-lg">
+			</ul>
+		</div>
+	</section>
+</div>
+</Layout>
+	<main>
+		<div id="map" class="h-96 z-10"></div>
+	</main>
+</Layout>

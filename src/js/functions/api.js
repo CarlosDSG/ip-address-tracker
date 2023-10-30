@@ -24,7 +24,8 @@ const getTimeZone = async (ip) => {
 };
 
 const getLocationData = async (ip) => {
-	const api = await fetch(`http://api.ipstack.com/${ip}?access_key=061de896653a2cbfc3a0d29864d4ea9a`);
+	const api = await fetch(`https://api.ipstack.com/185.183.33.13?access_key=061de896653a2cbfc3a0d29864d4ea9a
+	`);
 	const data = await api.json();
 
 	const ipData = {

@@ -6,17 +6,17 @@ const ul = document.getElementById('data-list');
 export const addHtmlInfo = async (ip) => {
 	const IP_DATA = await API(ip);
 	const timeZone = await getTimeZone(ip);
-	const locationData = await getLocationData(ip);
+	const locationIpData = await getLocationData(ip);
 
 	const li = showIpData({
 		ip: IP_DATA.ip,
 		city: IP_DATA.city,
-		regionCode: locationData.regionCode,
-		postalCode: locationData.postal,
+		regionCode: locationIpData.regionCode,
+		postalCode: locationIpData.postal,
 		time: timeZone,
 		isp: IP_DATA.isp,
 	});
-	updateMapMarker(locationIPData.latitude, locationIPData.longitude);
+	updateMapMarker(locationIpData.latitude, locationIpData.longitude);
 
 	ul.innerHTML = li;
 	const windowWidth = window.innerWidth;

@@ -25,21 +25,23 @@ const getTimeZone = async (ip) => {
 };
 
 const getLocationData = async (ip) => {
-	// URL de tu función proxy en Netlify (reemplaza 'tudominio.com' con tu dominio de Netlify)
-	const proxyUrl = 'https://ip-address-tracker2023.netlify.app/.netlify/functions/proxy';
-
-	// Realiza una solicitud GET a través del proxy
-	const api = await fetch(`${proxyUrl}?ip=${ip}`);
-	const data = await api.json();
-
-	const ipData = {
-		regionCode: data.region_code,
-		latitude: data.latitude,
-		longitude: data.longitude,
-		postal: data.zip,
-	};
-
-	return ipData;
+	const options = { method: 'GET' };
+	try {
+		const response = await fetch(
+			`https://ipgeolocation.abstractapi.com/v1/?api_key=1352261990424b049e19beb1045faa8a&ip_address=${ip}`,
+			options
+		);
+		const data = await response.json();
+		const locationData = {
+			regionCode: data.region_iso_code,
+			postalCode: data.postal_code,
+			latitude: data.latitude,
+			longitude: data.longitude,
+		};
+		return locationData;
+	} catch (error) {
+		console.error(error);
+	}
 };
 
 export { API, getLocationData, getTimeZone, getUserIp };

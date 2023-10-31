@@ -23,24 +23,32 @@ const getTimeZone = async (ip) => {
 	return data.location.timezone;
 };
 
-const getLocationData = async (ip) => {
-	// URL de tu función proxy en Netlify (reemplaza 'tudominio.com' con tu dominio de Netlify)
-	const proxyUrl = 'https://tudominio.com/.netlify/functions/proxy';
+const fetch = require('node-fetch');
+const { Response } = require('@netlify/functions');
 
-	// Realiza una solicitud GET a través del proxy
-	const api = await fetch(
-		`${proxyUrl}?url=http://api.ipstack.com/${ip}?access_key=061de896653a2cbfc3a0d29864d4ea9a`
-	);
-	const data = await api.json();
+exports.handler = async (event) => {
+	try {
+		// Realiza la solicitud a la API de IPStack
+		const apiResponse = await fetch(
+			`http://api.ipstack.com/${event.queryStringParameters.ip}?access_key=061de896653a2cbfc3a0d29864d4ea9a`
+		);
+		const apiData = await apiResponse.json();
 
-	const ipData = {
-		regionCode: data.region_code,
-		latitude: data.latitude,
-		longitude: data.longitude,
-		postal: data.zip,
-	};
+		// Configura los encabezados CORS para permitir solicitudes desde tu sitio web
+		const response = new Response(JSON.stringify(apiData), {
+			headers: {
+				'Access-Control-Allow-Origin': 'https://ip-address-tracker2023.netlify.app',
+				'Access-Control-Allow-Methods': 'GET',
+			},
+		});
 
-	return ipData;
+		return response;
+	} catch (error) {
+		return {
+			statusCode: 500,
+			body: JSON.stringify({ error: 'Ocurrió un error al procesar la solicitud.' }),
+		};
+	}
 };
 
 export { API, getLocationData, getTimeZone, getUserIp };

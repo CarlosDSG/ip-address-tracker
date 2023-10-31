@@ -24,8 +24,13 @@ const getTimeZone = async (ip) => {
 };
 
 const getLocationData = async (ip) => {
-	const api = await fetch(`http://api.ipstack.com/${ip}?access_key=061de896653a2cbfc3a0d29864d4ea9a`);
+	// URL de tu función proxy en Netlify (reemplaza 'tudominio.com' con tu dominio de Netlify)
+	const proxyUrl = 'https://tudominio.com/.netlify/functions/proxy';
 
+	// Realiza una solicitud GET a través del proxy
+	const api = await fetch(
+		`${proxyUrl}?url=http://api.ipstack.com/${ip}?access_key=061de896653a2cbfc3a0d29864d4ea9a`
+	);
 	const data = await api.json();
 
 	const ipData = {
@@ -34,6 +39,7 @@ const getLocationData = async (ip) => {
 		longitude: data.longitude,
 		postal: data.zip,
 	};
+
 	return ipData;
 };
 

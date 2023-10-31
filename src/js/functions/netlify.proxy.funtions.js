@@ -3,10 +3,11 @@ const { Response } = require('@netlify/functions');
 
 exports.handler = async (event) => {
 	try {
+		// Obtén la dirección IP del parámetro de consulta
+		const { ip } = event.queryStringParameters;
+
 		// Realiza la solicitud a la API de IPStack
-		const apiResponse = await fetch(
-			`http://api.ipstack.com/${event.queryStringParameters.ip}?access_key=061de896653a2cbfc3a0d29864d4ea9a`
-		);
+		const apiResponse = await fetch(`http://api.ipstack.com/${ip}?access_key=061de896653a2cbfc3a0d29864d4ea9a`);
 		const apiData = await apiResponse.json();
 
 		// Configura los encabezados CORS para permitir todas las solicitudes

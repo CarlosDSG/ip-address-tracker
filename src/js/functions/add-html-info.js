@@ -12,7 +12,7 @@ export const addHtmlInfo = async (ip) => {
 		ip: IP_DATA.ip,
 		city: IP_DATA.city,
 		regionCode: locationIpData.regionCode,
-		postalCode: locationIpData.postal,
+		postalCode: locationIpData.postalCode,
 		time: timeZone,
 		isp: IP_DATA.isp,
 	});

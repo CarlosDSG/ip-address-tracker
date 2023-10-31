@@ -1,26 +1,31 @@
-// Importa la biblioteca 'node-fetch' para realizar solicitudes HTTP
 const fetch = require('node-fetch');
+const { Response } = require('@netlify/functions');
 
-// Función para redirigir la solicitud
 exports.handler = async (event) => {
 	try {
-		// URL de la API original (HTTP)
-		const originalApiUrl = 'http://api.ipstack.com' + event.path;
+		const apiResponse = await fetch(
+			`http://api.ipstack.com/${event.queryStringParameters.ip}?access_key=061de896653a2cbfc3a0d29864d4ea9a`
+		);
+		const apiData = await apiResponse.json();
 
-		// Construye una URL segura (HTTPS) a partir de la URL original
-		const secureApiUrl = 'https://api.ipstack.com' + event.path;
+		const { region_code, latitude, longitude, zip } = apiData;
 
-		// Realiza una solicitud GET a la URL segura
-		const response = await fetch(secureApiUrl);
+		const response = new Response(
+			JSON.stringify({
+				regionCode: region_code,
+				latitude,
+				longitude,
+				postal: zip,
+			}),
+			{
+				headers: {
+					'Access-Control-Allow-Origin': '*', // Configura esto según tus necesidades
+					'Access-Control-Allow-Methods': 'GET',
+				},
+			}
+		);
 
-		// Obtiene los datos de la respuesta
-		const data = await response.json();
-
-		// Devuelve la respuesta al cliente
-		return {
-			statusCode: 200,
-			body: JSON.stringify(data),
-		};
+		return response;
 	} catch (error) {
 		return {
 			statusCode: 500,

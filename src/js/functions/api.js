@@ -1,19 +1,16 @@
 const getUserIp = async () => {
-	const api = await fetch('https://api.ipify.org/?format=json');
-	const data = await api.json();
-	return data;
+	const api = (await fetch('https://api.ipify.org/?format=json')).json();
+	return api;
 };
 
 const API = async (ip) => {
 	const api = await fetch(`https://ipinfo.io/${ip}?token=9b3fa73dd65477`);
 	const data = await api.json();
-	const addressData = {
+	return {
 		ip: data.ip,
 		city: data.city,
-		time: data.timezone,
 		isp: data.org,
 	};
-	return addressData;
 };
 
 const getTimeZone = async (ip) => {
@@ -32,13 +29,12 @@ const getLocationData = async (ip) => {
 			options
 		);
 		const data = await response.json();
-		const locationData = {
+		return {
 			regionCode: data.region_iso_code,
 			postalCode: data.postal_code,
 			latitude: data.latitude,
 			longitude: data.longitude,
 		};
-		return locationData;
 	} catch (error) {
 		console.error(error);
 	}
